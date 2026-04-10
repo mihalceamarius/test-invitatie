@@ -541,6 +541,51 @@
 <!-- NOTIFICATION CONTAINER -->
 <div id="notificationContainer" class="notification-container"></div>
 
+<!-- PASSWORD PROTECTION SCRIPT -->
+<script>
+// Password Protection (Encrypted Hash - NOT visible in HTML)
+// The actual password is NOT stored in plain text
+const PASSWORD_HASH = 'ab0e1b8fb41dd0e456b26adabebe7c49c66d33a00f23ac0da4f1c7fe39b6e8a6';
+
+// Simple hash function for verification (SHA-256 simulation using crypto)
+async function hashPassword(password) {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(password);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+async function checkPassword() {
+  const passwordInput = document.getElementById('passwordInput');
+  const modal = document.getElementById('passwordModal');
+
+  if (!passwordInput.value) {
+    showNotification('Vă rog introduceți parola!', 'error', 3000);
+    return;
+  }
+
+  const hash = await hashPassword(passwordInput.value);
+
+  if (hash === PASSWORD_HASH) {
+    // Correct password - hide modal and show content
+    modal.style.display = 'none';
+    sessionStorage.setItem('siteUnlocked', 'true');
+  } else {
+    // Wrong password
+    passwordInput.value = '';
+    showNotification('Parola incorectă! Încercați din nou.', 'error', 3000);
+  }
+}
+
+// Check if already unlocked on page load
+window.addEventListener('load', () => {
+  if (sessionStorage.getItem('siteUnlocked') === 'true') {
+    document.getElementById('passwordModal').style.display = 'none';
+  }
+});
+</script>
+
 <!-- ============================================
      CONTENT CONFIGURATION - EDIT HERE TO CHANGE ALL TEXT
      ============================================ -->
