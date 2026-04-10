@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ivory: #faf7f2;
+    --warm: #f0e8d8;
+    --gold: #b8975a;
+    --gold-light: #d4b47a;
+    --deep: #2c2416;
+    --muted: #7a6e5f;
+    --blush: #e8d5c4;
+    --border: rgba(184,151,90,0.25);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Jost', sans-serif;
+    background: var(--ivory);
+    color: var(--deep);
+    font-weight: 300;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: center; gap: 2.5rem;
+    padding: 1.2rem 2rem;
+    background: rgba(250,247,242,0.92);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+  }
+  nav a {
+    font-family: 'Jost', sans-serif;
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    text-decoration: none; color: var(--muted);
+    transition: color 0.3s;
+  }
+  nav a:hover { color: var(--gold); }
+
+  /* HERO */
+  #hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center;
+    background: var(--ivory);
+    padding: 6rem 2rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-ornament {
+    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    background-image:
+      radial-gradient(ellipse 60% 40% at 50% 0%, rgba(184,151,90,0.07) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 30% at 20% 80%, rgba(232,213,196,0.4) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 30% at 80% 80%, rgba(232,213,196,0.4) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .hero-date {
+    font-family: 'Jost', sans-serif;
+    font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 2rem;
+    animation: fadeUp 1s ease both;
+  }
+  .hero-names {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(4rem, 10vw, 8rem);
+    font-weight: 300; line-height: 1;
+    color: var(--deep);
+    animation: fadeUp 1s 0.2s ease both;
+  }
+  .hero-names em { font-style: italic; color: var(--gold); }
+  .hero-amp {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-style: italic; font-weight: 300;
+    color: var(--gold-light); display: block;
+    margin: 0.3rem 0;
+  }
+  .hero-divider {
+    display: flex; align-items: center; gap: 1rem;
+    margin: 2.5rem auto;
+    animation: fadeUp 1s 0.4s ease both;
+  }
+  .hero-divider::before, .hero-divider::after {
+    content: ''; display: block; height: 1px; width: 80px;
+    background: linear-gradient(to right, transparent, var(--gold));
+  }
+  .hero-divider::after { background: linear-gradient(to left, transparent, var(--gold)); }
+  .hero-divider-icon { color: var(--gold); font-size: 16px; }
+  .hero-location {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.25rem; font-style: italic;
+    color: var(--muted);
+    animation: fadeUp 1s 0.5s ease both;
+  }
+
+  /* SECTIONS */
+  section {
+    padding: 6rem 2rem;
+    max-width: 900px; margin: 0 auto;
+  }
+  .section-label {
+    font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase;
+    color: var(--gold); text-align: center; margin-bottom: 0.75rem;
+  }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 300; text-align: center;
+    color: var(--deep); margin-bottom: 1rem;
+  }
+  .section-title em { font-style: italic; color: var(--gold); }
+  .section-rule {
+    display: flex; align-items: center; justify-content: center;
+    gap: 1rem; margin-bottom: 3.5rem;
+  }
+  .section-rule::before, .section-rule::after {
+    content: ''; display: block; height: 1px; width: 60px;
+    background: var(--border);
+  }
+  .rule-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--gold); }
+
+  /* OUR STORY */
+  #story .story-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 3rem; align-items: center;
+  }
+  .story-image-frame {
+    position: relative;
+  }
+  .story-image-frame::before {
+    content: ''; position: absolute;
+    top: -16px; left: -16px; right: 16px; bottom: 16px;
+    border: 1px solid var(--border);
+    border-radius: 2px; z-index: 0;
+  }
+  .story-img {
+    width: 100%; aspect-ratio: 3/4; object-fit: cover;
+    border-radius: 2px; position: relative; z-index: 1;
+    background: var(--blush);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; font-size: 1.1rem; color: var(--muted);
+  }
+  .story-text p {
+    font-size: 1.05rem; line-height: 1.9; color: var(--muted);
+    margin-bottom: 1.25rem; text-align: justify;
+  }
+  .story-text p:first-child::first-letter {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3.5rem; font-weight: 400;
+    float: left; line-height: 0.75; margin: 0.1em 0.12em 0 0;
+    color: var(--gold);
+  }
+
+  /* PASSWORD MODAL */
+  .password-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(44, 36, 22, 0.95);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+  }
+  .password-modal {
+    background: var(--warm);
+    padding: 3rem;
+    border-radius: 2px;
+    text-align: center;
+    max-width: 400px;
+  }
+  .password-modal h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem;
+    color: var(--deep);
+    margin-bottom: 1rem;
+  }
+  .password-modal p {
+    color: var(--muted);
+    margin-bottom: 2rem;
+    font-size: 0.95rem;
+  }
+  .password-modal input {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    background: rgba(255, 255, 255, 0.5);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    font-family: 'Jost', sans-serif;
+    font-size: 1rem;
+    color: var(--deep);
+    margin-bottom: 1.5rem;
+    outline: none;
+  }
+  .password-modal input::placeholder {
+    color: rgba(44, 36, 22, 0.4);
+  }
+  .password-modal input:focus {
+    border-color: var(--gold);
+  }
+  .password-modal button {
+    width: 100%;
+    padding: 0.875rem;
+    background: var(--gold);
+    border: none;
+    color: var(--ivory);
+    font-family: 'Jost', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-weight: 500;
+  }
+  .password-modal button:hover {
+    background: var(--gold-light);
+  }
+
+  /* PHOTO GALLERY */
+  #gallery { background: var(--warm); max-width: 100%; padding: 6rem 2rem; }
+  #gallery .inner { max-width: 900px; margin: 0 auto; }
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 12px;
+  }
+  .gallery-item {
+    overflow: hidden; border-radius: 2px;
+    background: var(--blush);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .gallery-item:nth-child(1) { grid-column: 1 / span 2; grid-row: 1 / span 2; aspect-ratio: 1/1; }
+  .gallery-item:nth-child(2) { grid-column: 3; grid-row: 1; aspect-ratio: 1/1; }
+  .gallery-item:nth-child(3) { grid-column: 4; grid-row: 1; aspect-ratio: 1/1; }
+  .gallery-item:nth-child(4) { grid-column: 3 / span 2; grid-row: 2; aspect-ratio: auto; }
+  .gallery-placeholder {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; font-size: 0.9rem;
+    color: var(--muted); text-align: center; padding: 1rem;
+  }
+  .gallery-item:hover .gallery-placeholder { color: var(--gold); }
+
+  /* TIMELINE */
+  #schedule { background: var(--ivory); }
+  .timeline {
+    position: relative;
+    display: flex; flex-direction: column; gap: 0;
+  }
+  .timeline::before {
+    content: ''; position: absolute;
+    left: 50%; transform: translateX(-50%);
+    top: 0; bottom: 0; width: 1px;
+    background: var(--border);
+  }
+  .timeline-item {
+    display: flex; align-items: flex-start;
+    gap: 2rem; position: relative; padding-bottom: 3rem;
+  }
+  .timeline-item:nth-child(odd) { flex-direction: row-reverse; text-align: right; }
+  .timeline-item:nth-child(odd) .tl-content { align-items: flex-end; }
+  .timeline-dot {
+    position: absolute; left: 50%; transform: translateX(-50%);
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--ivory); border: 1.5px solid var(--gold);
+    top: 4px; z-index: 1;
+  }
+  .tl-time {
+    flex: 1;
+    font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--gold); padding-top: 2px;
+  }
+  .tl-content { flex: 1; display: flex; flex-direction: column; }
+  .tl-event {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem; font-weight: 400;
+    color: var(--deep); margin-bottom: 0.25rem;
+  }
+  .tl-desc { font-size: 0.875rem; color: var(--muted); line-height: 1.6; }
+
+  /* WEDDING PARTY */
+  #party { background: var(--warm); max-width: 100%; padding: 6rem 2rem; }
+  #party .inner { max-width: 900px; margin: 0 auto; }
+  .party-group-label {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem; font-style: italic;
+    color: var(--gold); text-align: center; margin-bottom: 2rem;
+  }
+  .party-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 2rem; margin-bottom: 3.5rem;
+  }
+  .party-card { display: flex; flex-direction: column; align-items: center; gap: 0.75rem; }
+  .party-avatar {
+    width: 90px; height: 90px; border-radius: 50%;
+    background: var(--blush);
+    border: 1.5px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem; color: var(--gold);
+    font-style: italic;
+  }
+  .party-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.05rem; text-align: center; color: var(--deep);
+  }
+  .party-role {
+    font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--muted); text-align: center;
+  }
+
+  /* VENUE */
+  #venue { background: var(--ivory); }
+  .venue-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; }
+  .venue-card {
+    border: 1px solid var(--border);
+    border-radius: 2px; padding: 2rem;
+  }
+  .venue-card-label {
+    font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 0.75rem;
+  }
+  .venue-card-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem; color: var(--deep); margin-bottom: 0.5rem;
+  }
+  .venue-card p { font-size: 0.9rem; color: var(--muted); line-height: 1.7; }
+  .venue-map {
+    width: 100%; aspect-ratio: 4/3;
+    background: var(--warm); border-radius: 2px;
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; color: var(--muted); font-size: 1rem;
+  }
+  .venue-travel-tips { margin-top: 2rem; }
+  .venue-travel-tips h4 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem; color: var(--deep); margin-bottom: 1rem;
+  }
+  .travel-tip {
+    display: flex; gap: 1rem; align-items: flex-start;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .travel-tip:last-child { border-bottom: none; }
+  .tip-icon { color: var(--gold); font-size: 14px; flex-shrink: 0; margin-top: 2px; }
+  .travel-tip p { font-size: 0.875rem; color: var(--muted); line-height: 1.6; }
+
+  /* RSVP */
+  #rsvp { background: var(--deep); max-width: 100%; padding: 6rem 2rem; }
+  #rsvp .inner { max-width: 600px; margin: 0 auto; }
+  #rsvp .section-label { color: var(--gold-light); }
+  #rsvp .section-title { color: var(--ivory); }
+  #rsvp .section-rule::before, #rsvp .section-rule::after { background: rgba(184,151,90,0.3); }
+  .rsvp-subtitle {
+    text-align: center; color: rgba(250,247,242,0.5);
+    font-size: 0.9rem; margin-bottom: 2.5rem; margin-top: -2rem;
+    font-style: italic; font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+  }
+  .rsvp-form { display: flex; flex-direction: column; gap: 1.25rem; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .form-group { display: flex; flex-direction: column; gap: 0.5rem; }
+  .form-group label {
+    font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: rgba(184,151,90,0.8);
+  }
+  .form-group input, .form-group select, .form-group textarea {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(184,151,90,0.2);
+    border-radius: 1px;
+    padding: 0.875rem 1rem;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.9rem; font-weight: 300;
+    color: var(--ivory);
+    outline: none; transition: border-color 0.3s;
+  }
+  .form-group input::placeholder, .form-group textarea::placeholder { color: rgba(250,247,242,0.25); }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+    border-color: var(--gold);
+  }
+  .form-group select { appearance: none; cursor: pointer; }
+  .form-group select option { background: var(--deep); color: var(--ivory); }
+  .form-group textarea { resize: vertical; min-height: 80px; }
+  .rsvp-btn {
+    display: block; width: 100%;
+    padding: 1rem;
+    background: transparent;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    font-family: 'Jost', sans-serif;
+    font-size: 11px; font-weight: 400;
+    letter-spacing: 0.25em; text-transform: uppercase;
+    cursor: pointer; transition: all 0.3s;
+    margin-top: 0.5rem;
+  }
+  .rsvp-btn:hover { background: var(--gold); color: var(--deep); }
+
+  /* FOOTER */
+  footer {
+    background: var(--deep); border-top: 1px solid rgba(184,151,90,0.15);
+    padding: 3rem 2rem;
+    text-align: center;
+    color: rgba(250,247,242,0.3);
+    font-size: 0.8rem; letter-spacing: 0.1em;
+  }
+  footer .footer-names {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem; font-style: italic;
+    color: var(--gold-light); margin-bottom: 0.5rem;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 1; }
+  }
+
+  /* NOTIFICATIONS */
+  .notification-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    pointer-events: none;
+    padding: 0.5rem 1rem;
+  }
+  .notification {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 1.25rem 1.5rem;
+    border-radius: 4px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    font-family: 'Jost', sans-serif;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    animation: slideDown 0.4s ease-out forwards;
+    pointer-events: auto;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .notification.success {
+    background: #d4edda;
+    border-left: 4px solid #28a745;
+    color: #155724;
+  }
+  .notification.error {
+    background: #f8d7da;
+    border-left: 4px solid #dc3545;
+    color: #721c24;
+  }
+  .notification.info {
+    background: #d1ecf1;
+    border-left: 4px solid #17a2b8;
+    color: #0c5460;
+  }
+  .notification-close {
+    margin-left: auto;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+    font-size: 1.2rem;
+    line-height: 1;
+  }
+  .notification-close:hover {
+    opacity: 1;
+  }
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes slideUp {
+    from {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    to {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+  }
+  .notification.hide {
+    animation: slideUp 0.3s ease-out forwards;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 640px) {
+    nav { gap: 1.2rem; }
+    nav a { font-size: 9px; }
+    #story .story-grid, .venue-grid { grid-template-columns: 1fr; }
+    .timeline::before { left: 0; }
+    .timeline-item { flex-direction: column !important; padding-left: 1.5rem; text-align: left !important; }
+    .timeline-item .tl-content { align-items: flex-start !important; }
+    .timeline-dot { left: 0 !important; transform: none; }
+    .tl-time { flex: none; }
+    .form-row { grid-template-columns: 1fr; }
+    .gallery-grid { grid-template-columns: 1fr 1fr; }
+    .gallery-item:nth-child(1) { grid-column: span 2; grid-row: span 1; }
+    .gallery-item:nth-child(2), .gallery-item:nth-child(3) { grid-column: span 1; }
+    .gallery-item:nth-child(4) { grid-column: span 2; }
+  }
+</style>
+</head>
+<body>
+
+<!-- PASSWORD PROTECTION MODAL -->
+<div id="passwordModal" class="password-modal-overlay">
+  <div class="password-modal">
+    <h2>Bine ați venit!</h2>
+    <p>Introduceți parola pentru a accesa site-ul:</p>
+    <input type="password" id="passwordInput" placeholder="Parola" onkeypress="if(event.key==='Enter') checkPassword()">
+    <button onclick="checkPassword()">Accesare</button>
+  </div>
+</div>
+
+<!-- NOTIFICATION CONTAINER -->
+<div id="notificationContainer" class="notification-container"></div>
+
+<!-- ============================================
+     CONTENT CONFIGURATION - EDIT HERE TO CHANGE ALL TEXT
+     ============================================ -->
+<script>
+const content = {
+  // Navigation
+  nav: {
+    story: "Povestea Noastră",
+    gallery: "Momente Speciale",
+    schedule: "Desfășurător",
+    party: "Nuntași",
+    venue: "Locație",
+    rsvp: "Confirmare"
+  },
+
+  // Hero Section
+  hero: {
+    date: "[Zi], [Dată]",
+    firstName: "[Mireasă]",
+    lastName: "[Mire]",
+    location: "[Locație] · [Oraș]"
+  },
+
+  // Story Section
+  story: {
+    label: "Povestea Noastră",
+    title: "Cum a devenit totul posibil?",
+    para1: "Într-o zi ploioasă, doi străini au intrat în același loc și s-a întâmplat ceva ... magic. Era de datoria destinului ca ei să se găsească acolo, în acel moment care le-a schimbat viața. Și-au surâs, fără să știe că era doar începutul unei povești frumoase.",
+    para2: "Ani de-a rândul, au împărtășit mii de clipe, au vizitat locuri frumoase și au construit amintiri care vor rămâne veșnic în inimile lor. Iar într-o zi, într-un loc special, el a făcut pasul cel mare — a spus cuvintele magice care au schimbat totul.",
+    para3: "Astăzi, suntem profund recunoscători că putem celebra acest moment special alături de voi — cei care ne-ați fost alături în fiecare pas al acestei călătorii. Vă mulțumim din suflet că sunteți parte din această poveste.",
+    photoPlaceholder: "[ Fotografie 1 ]"
+  },
+
+  // Gallery Section
+  gallery: {
+    label: "Momente Speciale",
+    title: "Galeria Amintirilor",
+    photo1: "[ Fotografie 1 ]",
+    photo2: "[ Fotografie 2 ]",
+    photo3: "[ Fotografie 3 ]",
+    photo4: "[ Fotografie 4 ]"
+  },
+
+  // Schedule Section
+  schedule: {
+    label: "Desfășurător",
+    title: "Programul Zilei",
+    events: [
+      {
+        time: "15:00",
+        event: "Sosire și Recepție",
+        desc: "Primiți cu băuturi și preparate ușoare în aer liber. Timp de a vă reuni și de a vă relaxa."
+      },
+      {
+        time: "16:00",
+        event: "Ceremonia",
+        desc: "Ceremonia oficială într-un cadru pitoresc. Un moment plin de emoție pentru toți cei prezenți."
+      },
+      {
+        time: "16:45",
+        event: "Ora Aperitivului",
+        desc: "Cocktail-uri, aperitive și fotografii. Timp liber pentru socializare și amintiri frumoase."
+      },
+      {
+        time: "18:30",
+        event: "Cina",
+        desc: "Masă festivă în atmosferă intimă, cu meniu special pregătit pentru această ocazie."
+      },
+      {
+        time: "21:00",
+        event: "Dansuri și Celebrări",
+        desc: "Primul dans, muzică, petrecere și distracție până târziu în noapte sub stele."
+      }
+    ]
+  },
+
+  // Party Section
+  party: {
+    label: "Nuntași",
+    title: "Nuntașii Noștri",
+    godparentslabel: "Nași",
+    godparents: [
+      { initial: "K", name: "Nume Persoană", role: "Naș" },
+      { initial: "L", name: "Nume Persoană", role: "Nașă" }
+    ],
+    bridesmaidsLabel: "Domnișoare de Onoare",
+    bridesmaids: [
+      { initial: "A", name: "Nume Persoană", role: "Domnișoară de Onoare" },
+      { initial: "B", name: "Nume Persoană", role: "Domnișoară de Onoare" },
+      { initial: "C", name: "Nume Persoană", role: "Domnișoară de Onoare" },
+      { initial: "D", name: "Nume Persoană", role: "Domnișoară de Onoare" }
+    ],
+    groomsmenLabel: "Cavaleri de Onoare",
+    groomsmen: [
+      { initial: "E", name: "Nume Persoană", role: "Cavaler de Onoare" },
+      { initial: "F", name: "Nume Persoană", role: "Cavaler de Onoare" },
+      { initial: "G", name: "Nume Persoană", role: "Cavaler de Onoare" },
+      { initial: "H", name: "Nume Persoană", role: "Cavaler de Onoare" }
+    ]
+  },
+
+  // Venue Section
+  venue: {
+    label: "Locație",
+    title: "Unde și Cum ajungeți",
+    ceremonyLabel: "Ceremonie și Recepție",
+    ceremonyName: "[Nume Locație]",
+    ceremonyAddr: "[Adresa]<br>[Localitate]<br>[Județ]",
+    hotelLabel: "Cazare Recomandată",
+    hotelName: "[Nume Hotel]",
+    hotelDesc: "[Adresa]<br>[Localitate]<br>[Județ]",
+    mapPlaceholder: "[ Hartă locație ]",
+    gettingThereTitle: "Cum Se Ajunge",
+    byCar: { icon: "🚗", title: "Cu Mașina", desc: "Parcare gratuită disponibilă la locația evenimentului." },
+  },
+
+  // RSVP Section
+  rsvp: {
+    label: "Confirmarea Prezenței",
+    title: "Vă rog să ne confirmați prezența",
+    subtitle: "Confirmați prezența până la data de [Data Limită]",
+    form: {
+      firstName: "Prenume",
+      firstNamePlaceholder: "Introduceți prenumele",
+      lastName: "Nume",
+      lastNamePlaceholder: "Introduceți numele",
+      attending: "Veți Participa?",
+      attendingSelect: "Selectați opțiunea",
+      attendingYes: "Voi participa cu plăcere",
+      attendingNo: "Din păcate, nu pot participa",
+      numGuests: "Numărul de Persoane",
+      message: "Mesaj pentru Mire și Mireasă",
+      messagePlaceholder: "Scrieți un mesaj de felicitări...",
+      button: "Trimiteți Confirmarea",
+      buttonConfirm: "✦ Mulțumim - Ne vedem curând! ✦"
+    }
+  },
+
+  // Footer
+  footer: {
+    names: "[Mireasa] & [Mirele]",
+    date: "[Data] · [Locație]"
+  }
+};
+</script>
+
+<!-- Navigation -->
+<nav>
+  <a href="#story" id="navStory"></a>
+  <a href="#gallery" id="navGallery"></a>
+  <a href="#schedule" id="navSchedule"></a>
+  <a href="#party" id="navParty"></a>
+  <a href="#venue" id="navVenue"></a>
+  <a href="#rsvp" id="navRsvp"></a>
+</nav>
+
+<!-- HERO -->
+<div id="hero">
+  <div class="hero-ornament"></div>
+  <p class="hero-date" id="heroDate"></p>
+  <h1 class="hero-names">
+    <span id="heroFirstName"></span>
+    <span class="hero-amp">&</span>
+    <span id="heroLastName"></span>
+  </h1>
+  <div class="hero-divider"><span class="hero-divider-icon">✦</span></div>
+  <p class="hero-location" id="heroLocation"></p>
+</div>
+
+<!-- OUR STORY -->
+<section id="story">
+  <p class="section-label" id="storyLabel"></p>
+  <h2 class="section-title" id="storyTitle"></h2>
+  <div class="section-rule"><div class="rule-dot"></div></div>
+  <div class="story-grid">
+    <div class="story-image-frame">
+      <div class="story-img" id="storyImg"></div>
+    </div>
+    <div class="story-text">
+      <p id="storyPara1"></p>
+      <p id="storyPara2"></p>
+      <p id="storyPara3"></p>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<div id="gallery">
+  <div class="inner">
+    <p class="section-label" id="galleryLabel"></p>
+    <h2 class="section-title" id="galleryTitle"></h2>
+    <div class="section-rule"><div class="rule-dot"></div></div>
+    <div class="gallery-grid" id="galleryGrid"></div>
+  </div>
+</div>
+
+<!-- SCHEDULE -->
+<section id="schedule">
+  <p class="section-label" id="scheduleLabel"></p>
+  <h2 class="section-title" id="scheduleTitle"></h2>
+  <div class="section-rule"><div class="rule-dot"></div></div>
+  <div class="timeline" id="timeline"></div>
+</section>
+
+<!-- WEDDING PARTY -->
+<div id="party">
+  <div class="inner">
+    <p class="section-label" id="partyLabel"></p>
+    <h2 class="section-title" id="partyTitle"></h2>
+    <div class="section-rule"><div class="rule-dot"></div></div>
+
+    <p class="party-group-label" id="godparentsLabel"></p>
+    <div class="party-grid" id="godparentsGrid"></div>
+
+    <p class="party-group-label" id="bridesmaidsLabel"></p>
+    <div class="party-grid" id="bridesmaidsGrid"></div>
+
+    <p class="party-group-label" id="groomsmenLabel"></p>
+    <div class="party-grid" id="groomsmenGrid"></div>
+  </div>
+</div>
+
+<!-- VENUE -->
+<section id="venue">
+  <p class="section-label" id="venueLabel"></p>
+  <h2 class="section-title" id="venueTitle"></h2>
+  <div class="section-rule"><div class="rule-dot"></div></div>
+  <div class="venue-grid">
+    <div>
+      <div class="venue-card" style="margin-bottom: 1rem;">
+        <div class="venue-card-label" id="venueCeremonyLabel"></div>
+        <div class="venue-card-name" id="venueCeremonyName"></div>
+        <p id="venueCeremonyAddr"></p>
+      </div>
+      <div class="venue-card">
+        <div class="venue-card-label" id="venueHotelLabel"></div>
+        <div class="venue-card-name" id="venueHotelName"></div>
+        <p id="venueHotelDesc"></p>
+      </div>
+    </div>
+    <div>
+      <div class="venue-map" id="venueMap"></div>
+      <div class="venue-travel-tips">
+        <h4 id="venueGettingThereTitle"></h4>
+        <div id="venueTravelTips"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RSVP -->
+<div id="rsvp">
+  <div class="inner">
+    <p class="section-label" id="rsvpLabel"></p>
+    <h2 class="section-title" style="color: var(--ivory);" id="rsvpTitle"></h2>
+    <div class="section-rule"><div class="rule-dot"></div></div>
+    <p class="rsvp-subtitle" id="rsvpSubtitle"></p>
+    <div class="rsvp-form">
+      <div class="form-row">
+        <div class="form-group">
+          <label id="rsvpFirstNameLabel"></label>
+          <input type="text" id="rsvpFirstNameInput" placeholder="">
+        </div>
+        <div class="form-group">
+          <label id="rsvpLastNameLabel"></label>
+          <input type="text" id="rsvpLastNameInput" placeholder="">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label id="rsvpAttendingLabel"></label>
+          <select id="rsvpAttendingSelect">
+            <option value="" id="rsvpAttendingSelectOpt"></option>
+            <option id="rsvpAttendingYesOpt"></option>
+            <option id="rsvpAttendingNoOpt"></option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label id="rsvpGuestsLabel"></label>
+          <select id="rsvpGuestsSelect">
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label id="rsvpMessageLabel"></label>
+        <textarea id="rsvpMessageInput" placeholder=""></textarea>
+      </div>
+      <button class="rsvp-btn" onclick="handleRSVP()" id="rsvpBtn"></button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-names" id="footerNames"></div>
+  <p id="footerDate"></p>
+</footer>
+
+<script>
+// Initialize all content when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+  initializeNav();
+  initializeHero();
+  initializeStory();
+  initializeGallery();
+  initializeSchedule();
+  initializeParty();
+  initializeVenue();
+  initializeRSVP();
+  initializeFooter();
+});
+
+function initializeNav() {
+  document.getElementById('navStory').textContent = content.nav.story;
+  document.getElementById('navGallery').textContent = content.nav.gallery;
+  document.getElementById('navSchedule').textContent = content.nav.schedule;
+  document.getElementById('navParty').textContent = content.nav.party;
+  document.getElementById('navVenue').textContent = content.nav.venue;
+  document.getElementById('navRsvp').textContent = content.nav.rsvp;
+}
+
+function initializeHero() {
+  document.getElementById('heroDate').textContent = content.hero.date;
+  document.getElementById('heroFirstName').textContent = content.hero.firstName;
+  document.getElementById('heroLastName').textContent = content.hero.lastName;
+  document.getElementById('heroLocation').textContent = content.hero.location;
+}
+
+function initializeStory() {
+  document.getElementById('storyLabel').textContent = content.story.label;
+  document.getElementById('storyTitle').innerHTML = content.story.title;
+  document.getElementById('storyImg').textContent = content.story.photoPlaceholder;
+  document.getElementById('storyPara1').textContent = content.story.para1;
+  document.getElementById('storyPara2').textContent = content.story.para2;
+  document.getElementById('storyPara3').textContent = content.story.para3;
+}
+
+function initializeGallery() {
+  document.getElementById('galleryLabel').textContent = content.gallery.label;
+  document.getElementById('galleryTitle').innerHTML = content.gallery.title;
+
+  const gallery = document.getElementById('galleryGrid');
+  gallery.innerHTML = `
+    <div class="gallery-item"><div class="gallery-placeholder">${content.gallery.photo1}</div></div>
+    <div class="gallery-item"><div class="gallery-placeholder">${content.gallery.photo2}</div></div>
+    <div class="gallery-item"><div class="gallery-placeholder">${content.gallery.photo3}</div></div>
+    <div class="gallery-item"><div class="gallery-placeholder">${content.gallery.photo4}</div></div>
+  `;
+}
+
+function initializeSchedule() {
+  document.getElementById('scheduleLabel').textContent = content.schedule.label;
+  document.getElementById('scheduleTitle').innerHTML = content.schedule.title;
+
+  const timeline = document.getElementById('timeline');
+  timeline.innerHTML = content.schedule.events.map((event, idx) => `
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div class="tl-time">${event.time}</div>
+      <div class="tl-content">
+        <div class="tl-event">${event.event}</div>
+        <div class="tl-desc">${event.desc}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function initializeParty() {
+  document.getElementById('partyLabel').textContent = content.party.label;
+  document.getElementById('partyTitle').innerHTML = content.party.title;
+  document.getElementById('godparentsLabel').textContent = content.party.godparentslabel;
+  document.getElementById('bridesmaidsLabel').textContent = content.party.bridesmaidsLabel;
+  document.getElementById('groomsmenLabel').textContent = content.party.groomsmenLabel;
+
+  const godparentsGrid = document.getElementById('godparentsGrid');
+  godparentsGrid.innerHTML = content.party.godparents.map(person => `
+    <div class="party-card">
+      <div class="party-avatar">${person.initial}</div>
+      <div class="party-name">${person.name}</div>
+      <div class="party-role">${person.role}</div>
+    </div>
+  `).join('');
+
+  const bridesmaidsGrid = document.getElementById('bridesmaidsGrid');
+  bridesmaidsGrid.innerHTML = content.party.bridesmaids.map(person => `
+    <div class="party-card">
+      <div class="party-avatar">${person.initial}</div>
+      <div class="party-name">${person.name}</div>
+      <div class="party-role">${person.role}</div>
+    </div>
+  `).join('');
+
+  const groomsmenGrid = document.getElementById('groomsmenGrid');
+  groomsmenGrid.innerHTML = content.party.groomsmen.map(person => `
+    <div class="party-card">
+      <div class="party-avatar">${person.initial}</div>
+      <div class="party-name">${person.name}</div>
+      <div class="party-role">${person.role}</div>
+    </div>
+  `).join('');
+}
+
+function initializeVenue() {
+  document.getElementById('venueLabel').textContent = content.venue.label;
+  document.getElementById('venueTitle').innerHTML = content.venue.title;
+  document.getElementById('venueCeremonyLabel').textContent = content.venue.ceremonyLabel;
+  document.getElementById('venueCeremonyName').textContent = content.venue.ceremonyName;
+  document.getElementById('venueCeremonyAddr').innerHTML = content.venue.ceremonyAddr;
+  document.getElementById('venueHotelLabel').textContent = content.venue.hotelLabel;
+  document.getElementById('venueHotelName').textContent = content.venue.hotelName;
+  document.getElementById('venueHotelDesc').innerHTML = content.venue.hotelDesc;
+  document.getElementById('venueMap').textContent = content.venue.mapPlaceholder;
+  document.getElementById('venueGettingThereTitle').textContent = content.venue.gettingThereTitle;
+
+  const travelTips = document.getElementById('venueTravelTips');
+  const tips = [content.venue.byCar];
+  travelTips.innerHTML = tips.map(tip => `
+    <div class="travel-tip">
+      <div class="tip-icon">${tip.icon}</div>
+      <p><strong style="color:var(--deep);font-weight:500">${tip.title}</strong> — ${tip.desc}</p>
+    </div>
+  `).join('');
+}
+
+function initializeRSVP() {
+  document.getElementById('rsvpLabel').textContent = content.rsvp.label;
+  document.getElementById('rsvpTitle').innerHTML = content.rsvp.title;
+  document.getElementById('rsvpSubtitle').textContent = content.rsvp.subtitle;
+  document.getElementById('rsvpFirstNameLabel').textContent = content.rsvp.form.firstName;
+  document.getElementById('rsvpFirstNameInput').placeholder = content.rsvp.form.firstNamePlaceholder;
+  document.getElementById('rsvpLastNameLabel').textContent = content.rsvp.form.lastName;
+  document.getElementById('rsvpLastNameInput').placeholder = content.rsvp.form.lastNamePlaceholder;
+  document.getElementById('rsvpAttendingLabel').textContent = content.rsvp.form.attending;
+  document.getElementById('rsvpAttendingSelectOpt').textContent = content.rsvp.form.attendingSelect;
+  document.getElementById('rsvpAttendingYesOpt').textContent = content.rsvp.form.attendingYes;
+  document.getElementById('rsvpAttendingNoOpt').textContent = content.rsvp.form.attendingNo;
+  document.getElementById('rsvpGuestsLabel').textContent = content.rsvp.form.numGuests;
+  document.getElementById('rsvpMessageLabel').textContent = content.rsvp.form.message;
+  document.getElementById('rsvpMessageInput').placeholder = content.rsvp.form.messagePlaceholder;
+  document.getElementById('rsvpBtn').textContent = content.rsvp.form.button;
+}
+
+function initializeFooter() {
+  document.getElementById('footerNames').textContent = content.footer.names;
+  document.getElementById('footerDate').textContent = content.footer.date;
+}
+
+// Supabase Configuration
+const SUPABASE_URL = 'https://yercrwvbyxhfhcqtdbob.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_i6o32bFJgT8g4rhN_CCTDQ_GiEukfKf';
+const RSVPS_TABLE = 'rsvps';
+
+// Show notification (replaces alert)
+function showNotification(message, type = 'info', duration = 5000) {
+  const container = document.getElementById('notificationContainer');
+  if (!container) return;
+
+  const notification = document.createElement('div');
+  notification.className = `notification ${type}`;
+  notification.innerHTML = `
+    <span>${message}</span>
+    <span class="notification-close" onclick="this.parentElement.remove()">×</span>
+  `;
+
+  container.appendChild(notification);
+
+  // Auto-remove after duration
+  if (duration > 0) {
+    setTimeout(() => {
+      notification.classList.add('hide');
+      setTimeout(() => notification.remove(), 300);
+    }, duration);
+  }
+}
+
+async function handleRSVP() {
+  const btn = document.getElementById('rsvpBtn');
+
+  // Collect form data
+  const rsvpData = {
+    first_name: document.getElementById('rsvpFirstNameInput').value.trim(),
+    last_name: document.getElementById('rsvpLastNameInput').value.trim(),
+    attending: document.getElementById('rsvpAttendingSelect').value,
+    num_guests: parseInt(document.getElementById('rsvpGuestsSelect').value),
+    message: document.getElementById('rsvpMessageInput').value.trim(),
+    created_at: new Date().toISOString()
+  };
+
+  // Validate required fields
+  if (!rsvpData.first_name || !rsvpData.last_name || !rsvpData.attending) {
+    showNotification('Vă rog să completați toate câmpurile obligatorii!', 'error', 4000);
+    return;
+  }
+
+  // Disable button during submission
+  btn.disabled = true;
+  btn.style.opacity = '0.6';
+  const originalText = btn.textContent;
+  btn.textContent = 'Se trimite...';
+
+  try {
+    // POST to Supabase with improved configuration
+    const response = await fetch(`${SUPABASE_URL}/rest/v1/${RSVPS_TABLE}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': SUPABASE_KEY,
+        'Authorization': `Bearer ${SUPABASE_KEY}`,
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify(rsvpData)
+    });
+
+    if (response.ok || response.status === 201) {
+      // Success
+      btn.textContent = content.rsvp.form.buttonConfirm;
+      btn.style.background = 'var(--gold)';
+      btn.style.color = 'var(--deep)';
+      btn.style.cursor = 'default';
+      btn.disabled = true;
+
+      try {
+        const form = document.querySelector('.rsvp-form');
+        if (form) {
+          form.reset();
+        }
+      } catch (e) {
+        document.getElementById('rsvpFirstNameInput').value = '';
+        document.getElementById('rsvpLastNameInput').value = '';
+        document.getElementById('rsvpAttendingSelect').value = '';
+        document.getElementById('rsvpGuestsSelect').value = '1';
+        document.getElementById('rsvpMessageInput').value = '';
+      }
+
+      showNotification('✓ Mulțumim! Confirmarea a fost trimisă cu succes!', 'success', 6000);
+    } else {
+      let errorMessage = `HTTP ${response.status}`;
+      try {
+        const errorData = await response.json();
+        errorMessage = errorData.message || errorData.error || errorMessage;
+      } catch (e) {
+        const errorText = await response.text();
+      }
+
+      showNotification(`Eroare: ${errorMessage}`, 'error', 0);
+      btn.textContent = originalText;
+      btn.disabled = false;
+      btn.style.opacity = '1';
+    }
+  } catch (error) {
+    showNotification(`Eroare de conexiune: ${error.message}`, 'error', 0);
+    btn.textContent = originalText;
+    btn.disabled = false;
+    btn.style.opacity = '1';
+  }
+}
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.style.opacity = '1';
+      e.target.style.transform = 'translateY(0)';
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('section, #gallery .inner, #party .inner, #rsvp .inner').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(30px)';
+  el.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+  observer.observe(el);
+});
+</script>
+</body>
+</html>
