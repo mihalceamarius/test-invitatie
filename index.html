@@ -18,7 +18,7 @@
     --border: rgba(184,151,90,0.25);
   }
 
-  html { scroll-behavior: smooth; }
+  html { scroll-behavior: smooth; width: 100%; height: 100%; overflow-x: hidden; }
 
   body {
     font-family: 'Jost', sans-serif;
@@ -26,14 +26,16 @@
     color: var(--deep);
     font-weight: 300;
     overflow-x: hidden;
+    width: 100%;
+    height: 100%;
   }
 
   /* NAV */
   nav {
     position: fixed; top: 0; left: 0; right: 0; z-index: 999;
     display: flex; justify-content: center; gap: 2.5rem;
-    padding: 1.2rem 2rem;
-    background: rgba(250,247,242,0.98);
+    padding: 1rem 1.5rem;
+    background: rgba(250,247,242,0.99);
     backdrop-filter: blur(8px);
     border-bottom: 2px solid var(--gold);
   }
@@ -42,7 +44,7 @@
     font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
     text-decoration: none; color: var(--deep);
     transition: color 0.3s;
-    font-weight: 500;
+    font-weight: 400;
   }
   nav a:hover { color: var(--gold); }
 
@@ -52,9 +54,10 @@
     display: flex; flex-direction: column; align-items: center; justify-content: center;
     text-align: center;
     background: var(--ivory);
-    padding: 6rem 2rem 4rem;
+    padding: 7rem 2rem 4rem;
     position: relative;
     overflow: hidden;
+    margin-top: 0;
   }
   .hero-ornament {
     position: absolute; top: 0; left: 0; right: 0; bottom: 0;
@@ -511,15 +514,16 @@
 
   /* RESPONSIVE */
   @media (max-width: 768px) {
-    nav { gap: 0.8rem; padding: 1rem 1rem; }
-    nav a { font-size: 10px; font-weight: 600; }
-    #hero { padding: 5rem 2rem 2rem; }
+    nav { gap: 0.6rem; padding: 0.7rem 0.8rem; }
+    nav a { font-size: 10px; font-weight: 400; }
+    #hero { padding: 6rem 1.5rem 2rem; }
     footer { padding: 2rem 1rem; }
     footer .footer-names { font-size: 1.2rem; }
   }
   @media (max-width: 640px) {
-    nav { gap: 0.6rem; padding: 0.8rem 1rem; }
-    nav a { font-size: 9px; font-weight: 600; }
+    nav { gap: 0.5rem; padding: 0.6rem 0.6rem; }
+    nav a { font-size: 9px; font-weight: 400; }
+    #hero { padding: 6.5rem 1rem 2rem; }
     #story .story-grid, .venue-grid { grid-template-columns: 1fr; }
     .timeline::before { left: 0; }
     .timeline-item { flex-direction: column !important; padding-left: 1.5rem; text-align: left !important; }
@@ -606,10 +610,19 @@ function checkPassword() {
   }
 }
 
+// iOS scroll fix - ensure page starts at top
+if (window.scrollY !== 0) {
+  window.scrollTo(0, 0);
+}
+
 // Check if already unlocked on page load
 window.addEventListener('load', () => {
-  // Always scroll to top on load
-  window.scrollTo(0, 0);
+  // Force scroll to top for iOS Safari
+  setTimeout(() => {
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  }, 0);
 
   if (sessionStorage.getItem('siteUnlocked') === 'true') {
     document.getElementById('passwordModal').style.display = 'none';
@@ -618,9 +631,13 @@ window.addEventListener('load', () => {
   }
 });
 
-// Also ensure scroll to top on DOM ready
-window.addEventListener('DOMContentLoaded', () => {
-  window.scrollTo(0, 0);
+// Also on DOMContentLoaded
+document.addEventListener('DOMContentLoaded', () => {
+  setTimeout(() => {
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  }, 0);
 });
 </script>
 
