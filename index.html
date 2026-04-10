@@ -522,8 +522,8 @@
     footer .footer-names { font-size: 1.2rem; }
   }
   @media (max-width: 640px) {
-    nav { gap: 0.4rem; padding: 0.5rem 0.5rem; overflow-x: auto; }
-    nav a { font-size: 8px; font-weight: 400; white-space: nowrap; }
+    nav { gap: 0.3rem; padding: 0.4rem 0.4rem; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    nav a { font-size: 7px; font-weight: 400; white-space: nowrap; letter-spacing: 0.1em; }
     #hero { padding: 6.5rem 1rem 2rem; }
     #story .story-grid, .venue-grid { grid-template-columns: 1fr; }
     .timeline::before { left: 0; }
@@ -1215,7 +1215,7 @@ function setupScrollActivation() {
         }
       }
     });
-  }, { threshold: 0.3 });
+  }, { threshold: 0.1 });
 
   sections.forEach(section => scrollObserver.observe(section));
 }
