@@ -30,18 +30,19 @@
 
   /* NAV */
   nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    position: fixed; top: 0; left: 0; right: 0; z-index: 999;
     display: flex; justify-content: center; gap: 2.5rem;
     padding: 1.2rem 2rem;
-    background: rgba(250,247,242,0.92);
+    background: rgba(250,247,242,0.98);
     backdrop-filter: blur(8px);
-    border-bottom: 1px solid var(--border);
+    border-bottom: 2px solid var(--gold);
   }
   nav a {
     font-family: 'Jost', sans-serif;
     font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
-    text-decoration: none; color: var(--muted);
+    text-decoration: none; color: var(--deep);
     transition: color 0.3s;
+    font-weight: 500;
   }
   nav a:hover { color: var(--gold); }
 
@@ -411,16 +412,16 @@
 
   /* FOOTER */
   footer {
-    background: var(--deep); border-top: 1px solid rgba(184,151,90,0.15);
+    background: var(--deep); border-top: 2px solid var(--gold);
     padding: 3rem 2rem;
     text-align: center;
-    color: rgba(250,247,242,0.3);
+    color: rgba(250,247,242,0.6);
     font-size: 0.8rem; letter-spacing: 0.1em;
   }
   footer .footer-names {
     font-family: 'Cormorant Garamond', serif;
     font-size: 1.5rem; font-style: italic;
-    color: var(--gold-light); margin-bottom: 0.5rem;
+    color: var(--gold); margin-bottom: 0.5rem;
   }
 
   /* ANIMATIONS */
@@ -509,9 +510,16 @@
   }
 
   /* RESPONSIVE */
+  @media (max-width: 768px) {
+    nav { gap: 0.8rem; padding: 1rem 1rem; }
+    nav a { font-size: 10px; font-weight: 600; }
+    #hero { padding: 5rem 2rem 2rem; }
+    footer { padding: 2rem 1rem; }
+    footer .footer-names { font-size: 1.2rem; }
+  }
   @media (max-width: 640px) {
-    nav { gap: 1.2rem; }
-    nav a { font-size: 9px; }
+    nav { gap: 0.6rem; padding: 0.8rem 1rem; }
+    nav a { font-size: 9px; font-weight: 600; }
     #story .story-grid, .venue-grid { grid-template-columns: 1fr; }
     .timeline::before { left: 0; }
     .timeline-item { flex-direction: column !important; padding-left: 1.5rem; text-align: left !important; }
@@ -567,8 +575,6 @@ function showNotification(message, type = 'info', duration = 5000) {
   }
 }
 
-// Password Protection (Encrypted with base64)
-// Password "15mai2027" encoded in base64: MTVtYWkyMDI3
 const PASSWORD_ENCODED = 'MTVtYWkyMDI3';
 
 // Simple password check using base64
@@ -602,11 +608,19 @@ function checkPassword() {
 
 // Check if already unlocked on page load
 window.addEventListener('load', () => {
+  // Always scroll to top on load
+  window.scrollTo(0, 0);
+
   if (sessionStorage.getItem('siteUnlocked') === 'true') {
     document.getElementById('passwordModal').style.display = 'none';
   } else {
     document.getElementById('passwordModal').style.display = 'flex';
   }
+});
+
+// Also ensure scroll to top on DOM ready
+window.addEventListener('DOMContentLoaded', () => {
+  window.scrollTo(0, 0);
 });
 </script>
 
