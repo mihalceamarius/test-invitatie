@@ -47,6 +47,7 @@
     font-weight: 400;
   }
   nav a:hover { color: var(--gold); }
+  nav a.active { color: var(--gold); }
 
   /* HERO */
   #hero {
@@ -515,14 +516,14 @@
   /* RESPONSIVE */
   @media (max-width: 768px) {
     nav { gap: 0.6rem; padding: 0.7rem 0.8rem; }
-    nav a { font-size: 10px; font-weight: 400; }
+    nav a { font-size: 10px; font-weight: 400; white-space: nowrap; }
     #hero { padding: 6rem 1.5rem 2rem; }
     footer { padding: 2rem 1rem; }
     footer .footer-names { font-size: 1.2rem; }
   }
   @media (max-width: 640px) {
-    nav { gap: 0.5rem; padding: 0.6rem 0.6rem; }
-    nav a { font-size: 9px; font-weight: 400; }
+    nav { gap: 0.4rem; padding: 0.5rem 0.5rem; overflow-x: auto; }
+    nav a { font-size: 8px; font-weight: 400; white-space: nowrap; }
     #hero { padding: 6.5rem 1rem 2rem; }
     #story .story-grid, .venue-grid { grid-template-columns: 1fr; }
     .timeline::before { left: 0; }
@@ -954,6 +955,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initializeVenue();
   initializeRSVP();
   initializeFooter();
+  setupScrollActivation();
 });
 
 function initializeNav() {
@@ -1193,6 +1195,30 @@ document.querySelectorAll('section, #gallery .inner, #party .inner, #rsvp .inner
   el.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
   observer.observe(el);
 });
+
+// Scroll-based active section highlighting
+function setupScrollActivation() {
+  const sections = document.querySelectorAll('#story, #gallery, #schedule, #party, #venue, #rsvp');
+  const navLinks = document.querySelectorAll('nav a');
+
+  const scrollObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        // Remove active class from all links
+        navLinks.forEach(link => link.classList.remove('active'));
+
+        // Add active class to corresponding link
+        const sectionId = entry.target.id;
+        const activeLink = document.querySelector(`nav a[href="#${sectionId}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      }
+    });
+  }, { threshold: 0.3 });
+
+  sections.forEach(section => scrollObserver.observe(section));
+}
 </script>
 </body>
 </html>
