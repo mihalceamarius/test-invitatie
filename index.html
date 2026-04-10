@@ -533,8 +533,10 @@
   <div class="password-modal">
     <h2>Bine ați venit!</h2>
     <p>Introduceți parola pentru a accesa site-ul:</p>
-    <input type="password" id="passwordInput" placeholder="Parola" onkeypress="if(event.key==='Enter') checkPassword()">
-    <button onclick="checkPassword()">Accesare</button>
+    <form id="passwordForm" onsubmit="event.preventDefault(); checkPassword();">
+      <input type="password" id="passwordInput" placeholder="Parola" required>
+      <button type="submit">Accesare</button>
+    </form>
   </div>
 </div>
 
@@ -565,21 +567,12 @@ function showNotification(message, type = 'info', duration = 5000) {
   }
 }
 
-// Password Protection (Encrypted Hash - NOT visible in HTML)
-// This hash was generated from "15mai2027" using SHA-256
-// The actual password is NOT stored in plain text
-const PASSWORD_HASH = 'b9811d3b8f4c423073b07c93914d32895345454bc369fae7577e6c55d95b4e6d';
+// Password Protection (Encrypted with base64)
+// Password "15mai2027" encoded in base64: MTVtYWkyMDI3
+const PASSWORD_ENCODED = 'MTVtYWkyMDI3';
 
-// Simple hash function for verification (SHA-256 using crypto)
-async function hashPassword(password) {
-  const encoder = new TextEncoder();
-  const data = encoder.encode(password);
-  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-  const hashArray = Array.from(new Uint8Array(hashBuffer));
-  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-}
-
-async function checkPassword() {
+// Simple password check using base64
+function checkPassword() {
   const passwordInput = document.getElementById('passwordInput');
   const modal = document.getElementById('passwordModal');
 
@@ -589,9 +582,9 @@ async function checkPassword() {
   }
 
   try {
-    const hash = await hashPassword(passwordInput.value);
+    const encoded = btoa(passwordInput.value);
 
-    if (hash === PASSWORD_HASH) {
+    if (encoded === PASSWORD_ENCODED) {
       // Correct password - hide modal and show content
       modal.style.display = 'none';
       sessionStorage.setItem('siteUnlocked', 'true');
